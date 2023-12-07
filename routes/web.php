@@ -7,19 +7,12 @@ use App\Http\Controllers\PelajarController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\RegisterController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\QuizzController;
 
 Route::get('/', [AuthController::class, 'index']);
 Route::post('/', [AuthController::class, 'login']);
+Route::post('/', [AuthController::class, 'login'])->name('login'); // Add this line
+
 
 Route::group(['middleware' => ['auth']], function() {
 
@@ -42,7 +35,8 @@ Route::group(['middleware' => ['auth']], function() {
         // Route::resource('guru', GuruController::class);
     });
 
-    Route::group(['middleware' => ['checklogin:pelajar']], function () {          
+    Route::group(['middleware' => ['checklogin:pelajar']], function () { 
+             
         Route::get('/pelajar', [PelajarController::class, 'index']);
         Route::post('/pelajar', [PelajarController::class, 'enter_room']);
         Route::get('/pelajar/room/{room}', [PelajarController::class, 'room'])->name('pelajar.room');
@@ -56,6 +50,8 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/logout', [AuthController::class, 'logout']); 
 });
+
+
 
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'register']);

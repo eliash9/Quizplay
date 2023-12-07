@@ -32,10 +32,12 @@ class PelajarController extends Controller
     public function play($id) {
         $link = Room::where('id', $id)->firstOrFail();
         $name = Room::findOrFail($id);
-        $quizzes = Quiz::where([['id_room', $name->id]])->get();
+        $quizzes = Quiz::where([['id_room', $name->id]])->paginate(1);
         // dd($room);
         return view('pelajar.room_post', ['quizzes' => $quizzes, 'name' => $name, 'link' => $link]);
     }
+
+    
 
     public function answer_save(Request $request, $id) {
         $room = Room::findOrFail($id);
